@@ -8,8 +8,10 @@ RUN apk add --no-cache \
     python3 \
     py3-pip \
     make \
-    g++
-
+    g++ \
+    py3-jinja2 \
+    py3-argparse
+    
 # Install Haraka
 RUN npm install -g Haraka && haraka -i /haraka
 
