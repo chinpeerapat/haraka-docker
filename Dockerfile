@@ -8,9 +8,10 @@ RUN apk add --no-cache \
     python3 \
     py3-pip \
     make \
-    g++ \
-    py3-jinja2 \
-    py3-argparse
+    g++
+
+# Update PATH to use virtual environment packages
+ENV PATH="/opt/venv/bin:$PATH"
     
 # Install Haraka
 RUN npm install -g Haraka && haraka -i /haraka
@@ -18,8 +19,12 @@ RUN npm install -g Haraka && haraka -i /haraka
 # Copy configuration files
 #COPY --chmod=755 config /haraka/config
 
-# install reqired python modules
-RUN pip3 install jinja2 argparse
+# Create a virtual environment
+RUN python3 -m venv /opt/venv
+
+# Activate the virtual environment and install packages
+RUN . /opt/venv/bin/activate && \
+    pip install jinja2 argparse
 
 COPY --chmod=444 templates /haraka/templates
 COPY --chmod=755 haraka-configure.py /usr/local/bin/haraka-configure
